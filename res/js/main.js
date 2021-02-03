@@ -31,7 +31,8 @@ const pushNote = (note) => {
     const a = document.createElement("a");
     h3.textContent = note.title;
     p.textContent = note.description;
-    a.textContent = 'Done';
+    a.textContent = 'Delete';
+    
     card.classList.add("card", "bg-dark", "mb-2");
     cardBody.classList.add("card-body");
     h3.classList.add("card-title");
@@ -41,6 +42,15 @@ const pushNote = (note) => {
     cardBody.appendChild(p);
     cardBody.appendChild(a);
     card.appendChild(cardBody);
+
+    a.addEventListener("click", (event) => {
+        const index = data.indexOf(note);
+        if (index > -1) {
+            data.splice(index, 1);
+            card.remove();
+            console.log('Deleted');
+        }
+    });
     return card;
 }
 
