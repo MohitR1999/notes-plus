@@ -28,22 +28,28 @@ const pushNote = (note) => {
     const cardBody = document.createElement("div");
     const h3 = document.createElement("h3");
     const p = document.createElement("p");
-    const a = document.createElement("a");
+    const deleteButton = document.createElement("a");
+    const editButton = document.createElement("a");
+    
     h3.textContent = note.title;
     p.textContent = note.description;
-    a.textContent = 'Delete';
-    
+    deleteButton.textContent = 'Delete';
+    editButton.textContent = 'Edit';
+
     card.classList.add("card", "bg-dark", "mb-2");
     cardBody.classList.add("card-body");
     h3.classList.add("card-title");
     p.classList.add("card-text");
-    a.classList.add("btn", "btn-primary");
+    deleteButton.classList.add("btn", "btn-primary");
+    editButton.classList.add("btn", "btn-success", "ms-1");
+
     cardBody.appendChild(h3);
     cardBody.appendChild(p);
-    cardBody.appendChild(a);
+    cardBody.appendChild(deleteButton);
+    cardBody.appendChild(editButton);
     card.appendChild(cardBody);
 
-    a.addEventListener("click", (event) => {
+    deleteButton.addEventListener("click", (event) => {
         const index = data.indexOf(note);
         if (index > -1) {
             data.splice(index, 1);
@@ -51,6 +57,50 @@ const pushNote = (note) => {
             console.log('Deleted');
         }
     });
+
+    editButton.addEventListener("click", (event) => {
+        editButton.remove();
+        h3.remove();
+        p.remove();
+        deleteButton.remove();
+
+        const editHeading = document.createElement("input");
+        editHeading.classList.add("form-control", "bg-dark", "text-light", "mb-3");
+        editHeading.value = h3.textContent;
+        
+        const editDescription = document.createElement("textarea");
+        editDescription.classList.add("form-control", "bg-dark", "text-light");
+        editDescription.value = p.textContent;
+
+        const saveButton = document.createElement("a");
+        saveButton.classList.add("btn", "btn-success", "mt-3");
+        saveButton.textContent = 'Save';
+
+        saveButton.addEventListener("click", event => {
+            event.preventDefault();
+            if (editHeading.value !== null && editHeading.value.length > 0) {
+                note.title = editHeading.value;
+                note.description = editDescription.value;
+                h3.textContent = note.title;
+                p.textContent = note.description;
+                editHeading.remove();
+                editDescription.remove();
+                saveButton.remove();
+                cardBody.appendChild(h3);
+                cardBody.appendChild(p);
+                cardBody.appendChild(deleteButton);
+                cardBody.appendChild(editButton);
+            }
+            else {
+                alert('Please enter a valid title');
+            }
+        }) 
+
+        cardBody.appendChild(editHeading);
+        cardBody.appendChild(editDescription);
+        cardBody.appendChild(saveButton);
+    });
+    
     return card;
 }
 
