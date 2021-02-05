@@ -4,22 +4,40 @@ const title = document.querySelector("#title");
 const description = document.querySelector("#description");
 const notesLog = document.querySelector("#notes-log");
 
-class Item {
-    constructor(title) {
-        this.title = title;
-        this.id = Math.floor(Math.random() * 10000000);
-    }
+/**
+ * This is javascript syntactical sugar, that uses class and constructor
+ */
 
+// class Item {
+//     constructor(title) {
+//         this.title = title;
+//         this.id = Math.floor(Math.random() * 10000000);
+//     }
+// }
+
+// class Note extends Item {
+//     constructor(title, description) {
+//         super(title);
+//         this.description = description;
+//     }
+// }
+
+/**
+ * This is using the same features by prototyping
+ */
+
+function Item(title) {
+    this.title = title;
+    this.id = Math.floor(Math.random() * 10000000);
 }
 
-class Note extends Item {
-    
-    constructor(title, description) {
-        super(title);
-        this.description = description;
-    }
 
+function Note(title, description){
+    Item.call(this, title);
+    this.description = description;
 }
+
+Note.prototype = Item;
 
 const data = [];
 
